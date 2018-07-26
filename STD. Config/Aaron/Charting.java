@@ -2,16 +2,20 @@ package application;
 
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.StackPane;
@@ -28,6 +32,11 @@ public class Charting extends Application {
     static int fieldWidthAlignment = screenWidth/45;
     static int proportionalHeight = screenHeight/10;
     static double proportionalWidth = screenWidth/16;
+    
+//    private Line valueMarker = new Line();
+//    private XYChart.Series<Number, Number> series = new XYChart.Series<>();
+//    //private NumberAxis yAxis;
+//    private double yShift;
 	
 	@Override
 	public void start(Stage stage) {
@@ -64,8 +73,20 @@ public class Charting extends Application {
         //lineChart.setMinHeight(screenHeight*2/3);
         //lineChart.setLayoutX(screenProportionHeightby25*2);
         //lineChart.setLayoutY(screenProportionHeightby25+60);
-        
         lineChart.setCursor(Cursor.CROSSHAIR);
+        
+//        Node chartPlotArea = lineChart.lookup(".chart-plot-background");
+//        double chartZeroX = chartPlotArea.getLayoutX();
+//        double chartZeroY = chartPlotArea.getLayoutY();
+//        System.out.println("X = " + chartZeroX);
+//        System.out.println("Y = " + chartZeroY);
+        
+//        final CheckBox box1 = new CheckBox(lineChart.getTitle());
+//        box1.setSelected(true);
+//        if (box1.isSelected())
+//        	lineChart.getData().add(e)
+//        else
+//        	lineChart.getData().remove()
         
         LineChart<Number, Number> lineChart2 = createChart2();
         lineChart2.setMinWidth(screenWidth-120);
@@ -78,7 +99,7 @@ public class Charting extends Application {
         stack.setLayoutY(screenProportionHeightby25+60);
         stack.getChildren().addAll(lineChart, lineChart2);
         
-        root.getChildren().add(stack);
+        root.getChildren().addAll(stack);
         
         
 		Scene scene = new Scene(root);
@@ -106,26 +127,13 @@ public class Charting extends Application {
 		
 		final NumberAxis yAxis = new NumberAxis(-5000, 0, 200);
 		//yAxis.setLowerBound(yAxis.getUpperBound()/(-3));
-		//yAxis.setTickLabelsVisible(false);
-		//yAxis.setOpacity(0);
+		yAxis.setTickLabelsVisible(false);
+		yAxis.setOpacity(0);
 
 		final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-		lineChart.setTitle("Line Chart");
-
-//		XYChart.Series<Number, Number> series1 = new XYChart.Series<>();
-//		series1.setName("Ex. Line");
-//		series1.getData().add(new XYChart.Data<Number, Number>(1, 23));
-//		series1.getData().add(new XYChart.Data(200, 14));
-//		series1.getData().add(new XYChart.Data(350, 15));
-//		series1.getData().add(new XYChart.Data(490, 24));
-//		series1.getData().add(new XYChart.Data(1000, 34));
-//		series1.getData().add(new XYChart.Data(2500, 36));
-//		series1.getData().add(new XYChart.Data(2700, 22));
-//		series1.getData().add(new XYChart.Data(8, 45));
-//		series1.getData().add(new XYChart.Data(9, 43));
-//		series1.getData().add(new XYChart.Data(10, 17));
-//		series1.getData().add(new XYChart.Data(11, 29));
-//		series1.getData().add(new XYChart.Data(12, 25));
+		lineChart.setHorizontalGridLinesVisible(false);
+		lineChart.setVerticalGridLinesVisible(false);
+		//lineChart.setTitle("Line Chart");
 		
 		XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
 		series2.setName("0 to -5000");
@@ -137,15 +145,32 @@ public class Charting extends Application {
 		series2.getData().add(new XYChart.Data(2500, -3690));
 		series2.getData().add(new XYChart.Data(2700, -2240));
 		
-		XYChart.Series<Number, Number> series3 = new XYChart.Series<>();
-		series3.setName("-40 to 150");
-		series3.getData().add(new XYChart.Data<Number, Number>(20, 0));
-		series3.getData().add(new XYChart.Data(200, -40));
-		series3.getData().add(new XYChart.Data(350, -10));
-		series3.getData().add(new XYChart.Data(490, 20));
-		series3.getData().add(new XYChart.Data(1000, 150));
-		series3.getData().add(new XYChart.Data(2500, 36));
-		series3.getData().add(new XYChart.Data(2700, 100));
+//		double max = 0;
+//		for (Data<Number, Number> value : series2.getData()) {
+//			double y = value.getYValue().doubleValue();
+//			System.out.println("Current Y-value = " + y);
+//			if(y < max) {
+//				max = y;
+//				System.out.println("Current max = " + max);
+//			}
+//		}
+//		double displayPosition = yAxis.getDisplayPosition(max);
+//		Node chartArea = lineChart.lookup(".chart-plot-background");
+//		Bounds chartAreaBounds = chartArea.localToScene(chartArea.getBoundsInLocal());
+//		double yShift = chartAreaBounds.getMinY();
+//		System.out.println("Y-shift = " + yShift);
+//		
+//		System.out.println("Max: " + displayPosition);
+		
+//		XYChart.Series<Number, Number> series3 = new XYChart.Series<>();
+//		series3.setName("-40 to 150");
+//		series3.getData().add(new XYChart.Data<Number, Number>(20, 0));
+//		series3.getData().add(new XYChart.Data(200, -40));
+//		series3.getData().add(new XYChart.Data(350, -10));
+//		series3.getData().add(new XYChart.Data(490, 20));
+//		series3.getData().add(new XYChart.Data(1000, 150));
+//		series3.getData().add(new XYChart.Data(2500, 36));
+//		series3.getData().add(new XYChart.Data(2700, 100));
 		
 //		XYChart.Series<Number, Number> series4 = new XYChart.Series<>();
 //		series4.setName("-1 to 1");
@@ -157,25 +182,25 @@ public class Charting extends Application {
 //		series4.getData().add(new XYChart.Data(2500, 0.7));
 //		series4.getData().add(new XYChart.Data(2700, 0.5));
 
-		lineChart.getData().addAll(series2);
+		lineChart.getData().add(series2);
 		
-		final NumberAxis xAxis2 = new NumberAxis(0, 5400, 600);
-		xAxis.setLabel("Time (in seconds)");
-		xAxis.setMinorTickVisible(false);
-		
-		final NumberAxis yAxis2 = new NumberAxis(-40, 150, 10);
-		//yAxis.setLowerBound(yAxis.getUpperBound()/(-3));
-		final LineChart<Number, Number> lineChart2 = new LineChart<Number, Number>(xAxis, yAxis2);
-		lineChart2.getData().add(series3);
-	    lineChart2.setLegendVisible(false);
-        lineChart2.setAnimated(false);
-        lineChart2.setCreateSymbols(true);
-        lineChart2.setAlternativeRowFillVisible(false);
-        lineChart2.setAlternativeColumnFillVisible(false);
-        lineChart2.setHorizontalGridLinesVisible(false);
-        lineChart2.setVerticalGridLinesVisible(false);
-        lineChart2.getXAxis().setVisible(false);
-        lineChart2.getYAxis().setVisible(false);
+//		final NumberAxis xAxis2 = new NumberAxis(0, 5400, 600);
+//		xAxis.setLabel("Time (in seconds)");
+//		xAxis.setMinorTickVisible(false);
+//		
+//		final NumberAxis yAxis2 = new NumberAxis(-40, 150, 10);
+//		//yAxis.setLowerBound(yAxis.getUpperBound()/(-3));
+//		final LineChart<Number, Number> lineChart2 = new LineChart<Number, Number>(xAxis, yAxis2);
+//		lineChart2.getData().add(series3);
+//	    lineChart2.setLegendVisible(false);
+//        lineChart2.setAnimated(false);
+//        lineChart2.setCreateSymbols(true);
+//        lineChart2.setAlternativeRowFillVisible(false);
+//        lineChart2.setAlternativeColumnFillVisible(false);
+//        lineChart2.setHorizontalGridLinesVisible(false);
+//        lineChart2.setVerticalGridLinesVisible(false);
+//        lineChart2.getXAxis().setVisible(false);
+//        lineChart2.getYAxis().setVisible(false);
         
 		return lineChart;
 	}
@@ -187,8 +212,8 @@ public class Charting extends Application {
 		
 		final NumberAxis yAxis = new NumberAxis(-40, 150, 10);
 		//yAxis.setLowerBound(yAxis.getUpperBound()/(-3));
-		//yAxis.setTickLabelsVisible(false);
-		//yAxis.setOpacity(0);
+		yAxis.setTickLabelsVisible(false);
+		yAxis.setOpacity(0);
 
 		XYChart.Series<Number, Number> series3 = new XYChart.Series<>();
 		series3.setName("-40 to 150");
@@ -201,7 +226,7 @@ public class Charting extends Application {
 		series3.getData().add(new XYChart.Data(2700, 100));
 		
 		final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-		lineChart.setTitle("Line Chart");
+		//lineChart.setTitle("Line Chart");
 		lineChart.getData().add(series3);
 	    lineChart.setLegendVisible(false);
         lineChart.setAnimated(false);
