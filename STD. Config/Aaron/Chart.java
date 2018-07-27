@@ -101,11 +101,6 @@ public class Chart extends Application {
         stack.getChildren().addAll(chart);
         stack.setLayoutX(screenProportionHeightby25*2);
         stack.setLayoutY(screenProportionHeightby25+60);
-//        Scene scene = new Scene(stack, 1000, 900);
-        
-//        Pane stack = new Pane();
-
-//        stack.getChildren().addAll(chart);
         
         root.getChildren().addAll(stack, valueMarker);
         Scene scene = new Scene(root);
@@ -128,7 +123,6 @@ public class Chart extends Application {
         valueMarker.setEndY(screenHeight-105);
         valueMarker.setStroke(Color.BLUE);
         valueMarker.getStrokeDashArray().addAll(10.0, 10.0);
-        line.getStrokeDashArray().addAll(10.0,0.0,10.0,0.0);
         
         double max = 210;
 //        for (Data<Number, Number> value : series.getData()) {
