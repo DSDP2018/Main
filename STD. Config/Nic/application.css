@@ -1,0 +1,114 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.chart-plot-background {
+    -fx-border-color: black; 
+    -fx-border-style: solid; 
+    -fx-border-width: 2px; 
+    -fx-border-insets: 0 0 0 1;
+}
+
+
+#functionalButton {
+    -fx-background-color:#FFDAB9; 
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 3 7 3 7;
+        -fx-text-fill: black;
+        -fx-font-size: 12px;
+
+}
+#functionalButton1 {
+    -fx-background-color:#FFDAB9; 
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 3 7 3 7;
+        -fx-text-fill: black;
+        -fx-font-size: 7px;
+
+}
+#functionalButtonBiggerText{
+    -fx-background-color:#FFDAB9; 
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 5 10 5 10;
+        -fx-text-fill: black;
+        -fx-font-size: 12px;    
+}
+
+
+
+#textField{
+	-fx-background-color: #d4ffd4;
+	-fx-padding: 3 7 3 7;
+        -fx-font-size: 12px;
+}
+#textFieldBiggerText{
+	-fx-background-color: #d4ffd4;
+	-fx-padding: 5 10 5 10;
+        -fx-font-size: 12px;
+}
+#disabledTextField{
+	-fx-background-color: #DCDCDC;
+	-fx-padding: 3 7 3 7;
+        -fx-font-size: 12px;
+}
+
+#label{
+        -fx-background-color: #f49541;
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 3 7 3 7;
+        -fx-text-fill: black;
+        -fx-font-size: 10px;
+}
+#label1{
+        -fx-background-color: #f49541;
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 1 2 1 2;
+        -fx-text-fill: black;
+        -fx-font-size: 8px;
+}
+#labelBiggerText{
+        -fx-background-color: #f49541;
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 5 10 5 10;
+        -fx-text-fill: black;
+        -fx-font-size: 14px;
+}
+
+#revisionControl {
+        -fx-background-color: #EED2EE;
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 5 10 5 10;
+        -fx-text-fill: black;
+        -fx-font-size: 18px;
+        -fx-font-weight: bold;
+     
+}
+
+#otherBorder {
+        -fx-background-color: #D3D3D3;
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 5 10 5 10;
+        -fx-text-fill: black;
+        -fx-font-size: 14px;
+}
+
+#helpTitle {
+    -fx-background-color: #f49541;
+    -fx-background-insets: 0,1,2;
+    -fx-background-radius: 3,2,1;
+    -fx-padding: 5 10 5 10;
+    -fx-underline: true;
+    -fx-font-size: 24px;
+}
+
+#tooltip {
+    -fx-background-color: #41A0F4;
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 12px;
+}
