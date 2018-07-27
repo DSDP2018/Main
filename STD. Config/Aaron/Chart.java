@@ -80,8 +80,8 @@ public class Chart extends Application {
         chart.setAlternativeColumnFillVisible(false);
         chart.setHorizontalGridLinesVisible(false);
         chart.setVerticalGridLinesVisible(false);
-        //chart.getXAxis().setVisible(false);
-        //chart.getYAxis().setVisible(false);
+        chart.getXAxis().setVisible(false);
+        chart.getYAxis().setVisible(false);
         
         chart.setMinWidth(screenWidth-250);
         chart.setMinHeight(screenHeight-200);
