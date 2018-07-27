@@ -17,8 +17,8 @@
         -fx-font-size: 12px;
 
 }
-#functionalButton1 {
-    -fx-background-color:#FFDAB9; 
+#SmallLabel {
+    -fx-background-color:#f49541; 
         -fx-background-insets: 0,1,2;
         -fx-background-radius: 3,2,1;
         -fx-padding: 3 7 3 7;
@@ -55,6 +55,14 @@
 
 #label{
         -fx-background-color: #f49541;
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 3 7 3 7;
+        -fx-text-fill: black;
+        -fx-font-size: 10px;
+}
+#labelGrey{
+        -fx-background-color: #e6e8ed;
         -fx-background-insets: 0,1,2;
         -fx-background-radius: 3,2,1;
         -fx-padding: 3 7 3 7;

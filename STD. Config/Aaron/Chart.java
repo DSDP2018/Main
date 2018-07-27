@@ -60,8 +60,8 @@ public class Chart extends Application {
         Label lblDateBorder = label("YY-MM-DD", 75, 15, proportionalWidth*12, 37, "", "Current Date");
         Label lblPageNum = label("Page 1 of 1", 75, 15, proportionalWidth*14, 37, "", "Page Number");
         
-        Button btnComponentState = button("Component State (KPF)",22,15, screenProportionHeightby25 + 1, screenProportionHeightby25+30+1, "functionalButton1" ,false, "Print the Current Page");
-        Button btnSystemState = button("System State (KPF)",22,15, screenProportionHeightby25 + 1,screenHeight-80-15-10, "functionalButton1" ,false, "Print the Current Page");
+        Button btnComponentState = button("Component State (KPF)",22,15, screenProportionHeightby25 + 1, screenProportionHeightby25+30+1, "SmallLabel" ,false, "Print the Current Page");
+        Button btnSystemState = button("System State (KPF)",22,15, screenProportionHeightby25 + 1,screenHeight-80-15-10, "SmallLabel" ,false, "Print the Current Page");
         Button btnPrint = button("Print", 120, (screenHeight-75), "functionalButtonBiggerText" ,true, "Print the Current Page");
         Button btnDashboard = button("Dashboard", 220, (screenHeight-75), "functionalButtonBiggerText", true, "Redirects to the Dashboard Page");
         Button btnZoomIO = button("Zoom-In/Out", screenWidth/2, (screenHeight-75), "functionalButtonBiggerText", true, "Zoom in and out on current page");
@@ -71,6 +71,7 @@ public class Chart extends Application {
         		smallVert1, smallVert2, smallVert3, lblSTDConfig, lblProjectID,
         		lblRevisionNum, lblDateBorder, lblPageNum, btnComponentState,
         		btnSystemState, btnPrint, btnDashboard, btnZoomIO, btnHelp);
+        
         
         LineChart<Number, Number> chart = new LineChart<>(xAxis = new NumberAxis(0, 1000, 50), yAxis = new NumberAxis(0, 100, 10));
         chart.setLegendVisible(false);
@@ -84,23 +85,32 @@ public class Chart extends Application {
         chart.getYAxis().setVisible(false);
         
         chart.setMinWidth(screenWidth-250);
-        chart.setMinHeight(screenHeight-200);
+        chart.setMinHeight(screenHeight-230);
         
         yAxis.setTickLabelsVisible(false);
         yAxis.setOpacity(0);
         //xAxis.setTickLabelsVisible(false);
         //xAxis.setOpacity(0);
         
-        series.getData().add(new XYChart.Data(0, 0));
-        series.getData().add(new XYChart.Data(10, 20));
-        series.getData().add(new XYChart.Data(20, 15));
+        series.getData().add(new XYChart.Data(0, 20));
+        series.getData().add(new XYChart.Data(20, 20));
+        series.getData().add(new XYChart.Data(50, 40));
+        series.getData().add(new XYChart.Data(100, 40));
+        series.getData().add(new XYChart.Data(250, 57.5));
+        series.getData().add(new XYChart.Data(400, 75));
+        series.getData().add(new XYChart.Data(500, 75));
         chart.getData().add(series);
         
         
         StackPane stack = new StackPane();
         stack.getChildren().addAll(chart);
         stack.setLayoutX(screenProportionHeightby25*2);
-        stack.setLayoutY(screenProportionHeightby25+60);
+        stack.setLayoutY(screenProportionHeightby25+90);
+//        Scene scene = new Scene(stack, 1000, 900);
+        
+//        Pane stack = new Pane();
+
+//        stack.getChildren().addAll(chart);
         
         root.getChildren().addAll(stack, valueMarker);
         Scene scene = new Scene(root);
@@ -137,6 +147,12 @@ public class Chart extends Application {
         valueMarker.setStartX(xShift + displayPosition);
         valueMarker.setEndX(xShift + displayPosition);
         System.out.println("Display position = " + displayPosition);
+        
+        Label lblKPF1 = label("KPF1", 40, 15, valueMarker.getStartX()-20, valueMarker.getStartY()-10, "functionalButton", "The Current Menu");
+        Label lblS1 = label("S1", 40, 15, valueMarker.getEndX()-20, valueMarker.getEndY()-10, "labelGrey", "The Current Menu");
+        
+        root.getChildren().addAll(lblKPF1, lblS1);
+        
 	}
 	
     public static void main(String[] args) {
