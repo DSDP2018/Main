@@ -13,43 +13,47 @@
         -fx-background-radius: 3,2,1;
         -fx-padding: 3 7 3 7;
         -fx-text-fill: black;
-        -fx-font-size: 12px;
+        -fx-font-size: 10px;
 
 }
-#functionalButton1 {
+#functionalButton2 {
     -fx-background-color:#FFDAB9; 
         -fx-background-insets: 0,1,2;
         -fx-background-radius: 3,2,1;
-        -fx-padding: 3 7 3 7;
+        -fx-padding: 2 4 2 4;
         -fx-text-fill: black;
-        -fx-font-size: 7px;
+        -fx-font-size: 10px;
 
 }
-#functionalButtonBiggerText{
-    -fx-background-color:#FFDAB9; 
-        -fx-background-insets: 0,1,2;
-        -fx-background-radius: 3,2,1;
-        -fx-padding: 5 10 5 10;
-        -fx-text-fill: black;
-        -fx-font-size: 12px;    
-}
+
 
 
 
 #textField{
 	-fx-background-color: #d4ffd4;
-	-fx-padding: 3 7 3 7;
-        -fx-font-size: 12px;
+	-fx-padding: 10% 0%;
+        -fx-font-size: 8px;
 }
-#textFieldBiggerText{
+#textFieldBlue{
+	-fx-background-color: #ADD8E6;
+	-fx-padding: 10% 0%;
+        -fx-font-size: 7px;
+}
+
+#textFieldDarkGreen{
+	-fx-background-color: #9bea25;
+	-fx-padding: 10% 0%;
+        -fx-font-size: 7px;
+}
+#textFieldDarkBlue{
+	-fx-background-color: #557ac7;
+	-fx-padding: 10% 0%;
+        -fx-font-size: 7px;
+}
+#textField1{
 	-fx-background-color: #d4ffd4;
-	-fx-padding: 5 10 5 10;
-        -fx-font-size: 12px;
-}
-#disabledTextField{
-	-fx-background-color: #DCDCDC;
-	-fx-padding: 3 7 3 7;
-        -fx-font-size: 12px;
+	-fx-padding: 10% 0%;
+        -fx-font-size: 7px;
 }
 
 #label{
@@ -60,13 +64,22 @@
         -fx-text-fill: black;
         -fx-font-size: 10px;
 }
-#label1{
+
+#label2{
         -fx-background-color: #f49541;
         -fx-background-insets: 0,1,2;
         -fx-background-radius: 3,2,1;
-        -fx-padding: 1 2 1 2;
+        -fx-padding: 2 4 2 4;
         -fx-text-fill: black;
-        -fx-font-size: 8px;
+        -fx-font-size: 10px;
+}
+#labelYellow{
+        -fx-background-color: #fffb47;
+        -fx-background-insets: 0,1,2;
+        -fx-background-radius: 3,2,1;
+        -fx-padding: 2 4 2 4;
+        -fx-text-fill: black;
+        -fx-font-size: 10px;
 }
 #labelBiggerText{
         -fx-background-color: #f49541;
@@ -83,7 +96,7 @@
         -fx-background-radius: 3,2,1;
         -fx-padding: 5 10 5 10;
         -fx-text-fill: black;
-        -fx-font-size: 18px;
+        -fx-font-size: 14px;
         -fx-font-weight: bold;
      
 }
