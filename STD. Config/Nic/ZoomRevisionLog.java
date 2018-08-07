@@ -5,10 +5,8 @@ import java.util.List;
 
 
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -17,6 +15,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -28,9 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -39,7 +37,7 @@ import javafx.stage.Stage;
  */
 public class ZoomRevisionLog extends Application {
     
-    Stage window;
+    static Stage window;
     static Scene scene;
     static ScrollPane pane;
     public static double numberOfFields = 2.1;
@@ -60,12 +58,20 @@ public class ZoomRevisionLog extends Application {
     static int widthBy23 = screenWidth/25;
     static int heightBy30 = screenHeight/30;
     
+    private Line valueMarker = new Line();
+    private static XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    private static NumberAxis xAxis;
+    private static NumberAxis yAxis;
+    private static double xShift;
+    private static double yShift;
+    
     public static void main(String[] args) {
         launch(args);
     }
     public static void trying(Stage stage){
         Group root = new Group();
         group = root;
+        window = stage;
         // create canvas
         PannableCanvas canvas = new PannableCanvas();
 
@@ -648,12 +654,53 @@ public class ZoomRevisionLog extends Application {
        
         Button KPFSubmit = button("Submit", widthBy23 *7.5, heightBy30*27, "functionalButton", true, "to copy");
         KPFSubmit.setOnAction(e ->{
+        	window.setScene(scene);
         	//Aarons graph
         	List<Double> list1 = new ArrayList<Double>();
-        	list1.add(Double.valueOf(txtKPF1.getText()));
-        	list1.add(Double.valueOf(txtKPF2.getText()));
+//        	list1.add(Double.valueOf(txtKPF1.getText()));
+//        	list1.add(Double.valueOf(txtKPF2.getText()));
+//        	
+        	List<Double> list = new ArrayList<Double>();
+//        	list.add(Double.valueOf(txtLevel11.getText()));
+//        	list.add(Double.valueOf(txtLevel12.getText()));
+//        	list.add(Double.valueOf(txtLevel13.getText()));
+//        	list.add(Double.valueOf(txtLevel21.getText()));
+//        	list.add(Double.valueOf(txtLevel22.getText()));
+//        	list.add(Double.valueOf(txtLevel23.getText()));
+//        	
+//        	list.add(Double.valueOf(txtLevel31.getText()));
+//        	list.add(Double.valueOf(txtLevel32.getText()));
+//        	list.add(Double.valueOf(txtLevel33.getText()));
+//        	list.add(Double.valueOf(txtLevel41.getText()));
+//        	list.add(Double.valueOf(txtLevel42.getText()));
+//        	list.add(Double.valueOf(txtLevel43.getText()));
+//        	
+//        	list.add(Double.valueOf(txtLevel51.getText()));
+//        	list.add(Double.valueOf(txtLevel52.getText()));
+//        	list.add(Double.valueOf(txtLevel53.getText()));
+//        	list.add(Double.valueOf(txtLevel61.getText()));
+//        	list.add(Double.valueOf(txtLevel62.getText()));
+//        	list.add(Double.valueOf(txtLevel63.getText()));
+//        	
+//        	list.add(Double.valueOf(txtLevel71.getText()));
+//        	list.add(Double.valueOf(txtLevel72.getText()));
+//        	list.add(Double.valueOf(txtLevel73.getText()));
+//        	list.add(Double.valueOf(txtLevel81.getText()));
+//        	list.add(Double.valueOf(txtLevel82.getText()));
+//        	list.add(Double.valueOf(txtLevel83.getText()));
+//        	
+//        	list.add(Double.valueOf(txtLevel91.getText()));
+//        	list.add(Double.valueOf(txtLevel92.getText()));
+//        	list.add(Double.valueOf(txtLevel93.getText()));
+//        	list.add(Double.valueOf(txtLevel101.getText()));
+//        	list.add(Double.valueOf(txtLevel102.getText()));
+//        	list.add(Double.valueOf(txtLevel103.getText()));
+        	
+        	System.out.println(list.size());
         	
         	System.out.println(list1.size());
+        	
+        	
         	
         });
         canvas.getChildren().addAll(KPFSubmit,lbl10Two,txt2101,txt2102,txt2103,lbl11Two,txt2111,txt2112,txt2113,lbl12Two,txt2121,txt2122,
@@ -680,11 +727,8 @@ public class ZoomRevisionLog extends Application {
         stage.setHeight(primaryScreenBounds.getHeight());
  
         stage.setScene(scene);
-        stage.show();        
+        stage.show();
     }
-   
-
-
     
     /**
      * 
