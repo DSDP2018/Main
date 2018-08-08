@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -27,6 +28,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Screen;
@@ -38,12 +40,12 @@ import javafx.stage.Stage;
 public class ZoomRevisionLog extends Application {
     
     static Stage window;
-    static Scene scene;
+    static Scene scene, sceneChart;
     static ScrollPane pane;
     public static double numberOfFields = 2.1;
     public static int StartAtOne = 1;
     
-    static Group group;
+    static Group group, border;
     
     static Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
     //static int screenWidth = (int) primaryScreenBounds.getWidth();
@@ -71,9 +73,11 @@ public class ZoomRevisionLog extends Application {
     public static void trying(Stage stage){
         Group root = new Group();
         group = root;
+        border = new Group();
         window = stage;
         // create canvas
         PannableCanvas canvas = new PannableCanvas();
+        PannableCanvas chart = new PannableCanvas();
 
         // we don't want the canvas on the top/left in this example => just
         // translate it a bit
@@ -81,7 +85,8 @@ public class ZoomRevisionLog extends Application {
 //        canvas.setTranslateY(100);
 
         // create sample nodes which can be dragged
-        NodeGestures nodeGestures = new NodeGestures( canvas);
+        NodeGestures nodeGestures = new NodeGestures(canvas);
+        NodeGestures nodeGesturesChart = new NodeGestures(chart);
 
         int screenProportionHeightby25 = screenHeight/25;   
         Line line1 = LineBlackNoFill(screenProportionHeightby25,screenProportionHeightby25,screenProportionHeightby25,screenHeight-80);
@@ -90,15 +95,18 @@ public class ZoomRevisionLog extends Application {
         Line line4 = LineBlackNoFill(screenWidth-screenProportionHeightby25, screenHeight-80, screenProportionHeightby25, screenHeight-80);
         Line line5 = LineBlackNoFill(screenProportionHeightby25,screenProportionHeightby25+50,screenWidth-screenProportionHeightby25,screenProportionHeightby25+50);
         canvas.getChildren().addAll(line1,line2,line3,line4,line5);
+        chart.getChildren().addAll(line1,line2,line3,line4,line5);
         
 
             
         Label lblRevisionControl = label("Variable Stress-Drivers' Signal Configurator", 175, 15, 60, 50, "revisionControl", "The Current Menu");
+        Label lblSTDConfig = label("Intent Stress-Drivers Profile", 175, 15, 60, 37, "", "The Current Menu");
         Label lblProjectID = label("123456789012345678901234567890", 250, 15, proportionalWidth*9, 55, "", "Project ID");
         Label lblRevisionNum = label("R1", 75, 15, proportionalWidth*12, 55, "", "Revision Number");
         Label lblDateBorder = label("YY-MM-DD", 75, 15, proportionalWidth*13, 55, "", "Current Date");
         Label lblPageNum = label("Page 1 of 1", 75, 15, proportionalWidth*14, 55, "", "Page Number");
         canvas.getChildren().addAll(lblRevisionControl, lblProjectID,lblRevisionNum,lblDateBorder,lblPageNum);
+        chart.getChildren().addAll(lblSTDConfig, lblProjectID,lblRevisionNum,lblDateBorder,lblPageNum);
         
         
         Label lblParameter = label("parameter", 40, 15, widthBy23, heightBy30*4, "label", "parameter");
@@ -652,24 +660,31 @@ public class ZoomRevisionLog extends Application {
         Label KPF5 = label("KPF 5", 45, 15, widthBy23 *6.5, heightBy30*26.75, "label", "KPF 5");
         TextField txtKPF5= textfield("1234567890",50, true, widthBy23*6.5, heightBy30*27.5, "textField1");
        
+        Scene sceneChart = new Scene(border, 1440, 900);
+        SceneGestures sceneGesturesChart = new SceneGestures(chart);
+        sceneChart.addEventFilter( MouseEvent.MOUSE_PRESSED, sceneGesturesChart.getOnMousePressedEventHandler());
+        sceneChart.addEventFilter( MouseEvent.MOUSE_DRAGGED, sceneGesturesChart.getOnMouseDraggedEventHandler());
+        sceneChart.addEventFilter( ScrollEvent.ANY, sceneGesturesChart.getOnScrollEventHandler());
+        sceneChart.getStylesheets().add(ZoomRevisionLog.class.getResource("application.css").toExternalForm());
+        
         Button KPFSubmit = button("Submit", widthBy23 *7.5, heightBy30*27, "functionalButton", true, "to copy");
         KPFSubmit.setOnAction(e ->{
-        	window.setScene(scene);
+        	
         	//Aarons graph
         	List<Double> list1 = new ArrayList<Double>();
-//        	list1.add(Double.valueOf(txtKPF1.getText()));
-//        	list1.add(Double.valueOf(txtKPF2.getText()));
-//        	
+        	list1.add(Double.valueOf(txtKPF1.getText()));
+        	list1.add(Double.valueOf(txtKPF2.getText()));
+        	
         	List<Double> list = new ArrayList<Double>();
-//        	list.add(Double.valueOf(txtLevel11.getText()));
-//        	list.add(Double.valueOf(txtLevel12.getText()));
-//        	list.add(Double.valueOf(txtLevel13.getText()));
-//        	list.add(Double.valueOf(txtLevel21.getText()));
-//        	list.add(Double.valueOf(txtLevel22.getText()));
-//        	list.add(Double.valueOf(txtLevel23.getText()));
-//        	
-//        	list.add(Double.valueOf(txtLevel31.getText()));
-//        	list.add(Double.valueOf(txtLevel32.getText()));
+        	list.add(Double.valueOf(txtLevel11.getText()));
+        	list.add(Double.valueOf(txtLevel12.getText()));
+        	list.add(Double.valueOf(txtLevel13.getText()));
+        	list.add(Double.valueOf(txtLevel21.getText()));
+        	list.add(Double.valueOf(txtLevel22.getText()));
+        	list.add(Double.valueOf(txtLevel23.getText()));
+        	
+        	list.add(Double.valueOf(txtLevel31.getText()));
+        	list.add(Double.valueOf(txtLevel32.getText()));
 //        	list.add(Double.valueOf(txtLevel33.getText()));
 //        	list.add(Double.valueOf(txtLevel41.getText()));
 //        	list.add(Double.valueOf(txtLevel42.getText()));
@@ -700,8 +715,34 @@ public class ZoomRevisionLog extends Application {
         	
         	System.out.println(list1.size());
         	
+        	StackPane stack = new StackPane();
+        	LineChart<Number, Number> chartDisplay = new LineChart<>(xAxis = new NumberAxis(0, 1000, 50), yAxis = new NumberAxis(0, 100, 10));
+        	chartDisplay.setLegendVisible(false);
+        	chartDisplay.setAnimated(false);
+        	chartDisplay.setCreateSymbols(true);
+        	chartDisplay.setAlternativeRowFillVisible(false);
+        	chartDisplay.setAlternativeColumnFillVisible(false);
+        	chartDisplay.setHorizontalGridLinesVisible(false);
+            chartDisplay.setVerticalGridLinesVisible(false);
+            chartDisplay.getXAxis().setVisible(false);
+            chartDisplay.getYAxis().setVisible(false);
+            
+            chartDisplay.setMinWidth(screenWidth-250);
+            chartDisplay.setMinHeight(screenHeight-230);
         	
-        	
+            xAxis.setLabel("Time (seconds)");
+            yAxis.setTickLabelsVisible(false);
+            yAxis.setOpacity(0);
+        	            
+            charting(list, list1, 0.0);
+            
+            chartDisplay.getData().add(series);
+            
+            stack.getChildren().add(chartDisplay);
+            border.getChildren().add(stack);
+            //sceneChart
+            
+            window.setScene(sceneChart);
         });
         canvas.getChildren().addAll(KPFSubmit,lbl10Two,txt2101,txt2102,txt2103,lbl11Two,txt2111,txt2112,txt2113,lbl12Two,txt2121,txt2122,
         		txt2123,lbl13Two,txt2131,txt2132,txt2133,lbl14Two,txt2141,txt2142,txt2143,lbl15Two,txt2151,txt2152,txt2153,lbl16Two,
@@ -710,16 +751,25 @@ public class ZoomRevisionLog extends Application {
         		,KPF1,txtKPF1,KPF2,txtKPF2,KPF3,txtKPF3,KPF4,txtKPF4,KPF5,txtKPF5);
         
         group.getChildren().add(canvas);
+        border.getChildren().add(chart);
         System.out.println(screenWidth);
         System.out.println(screenHeight);
         // create scene which can be dragged and zoomed
         Scene scene = new Scene(group, 1440,1100);
         SceneGestures sceneGestures = new SceneGestures(canvas);
+
         scene.addEventFilter( MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         scene.addEventFilter( MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
         scene.addEventFilter( ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 
         scene.getStylesheets().add(ZoomRevisionLog.class.getResource("application.css").toExternalForm());
+        
+//        Scene sceneChart = new Scene(border, 1440, 900);
+//        SceneGestures sceneGesturesChart = new SceneGestures(chart);
+//        sceneChart.addEventFilter( MouseEvent.MOUSE_PRESSED, sceneGesturesChart.getOnMousePressedEventHandler());
+//        sceneChart.addEventFilter( MouseEvent.MOUSE_DRAGGED, sceneGesturesChart.getOnMouseDraggedEventHandler());
+//        sceneChart.addEventFilter( ScrollEvent.ANY, sceneGesturesChart.getOnScrollEventHandler());
+//        sceneChart.getStylesheets().add(ZoomRevisionLog.class.getResource("application.css").toExternalForm());
         //scene.getStylesheets().add("application.css");
         stage.setX(primaryScreenBounds.getMinX());
         stage.setY(primaryScreenBounds.getMinY());
@@ -728,6 +778,51 @@ public class ZoomRevisionLog extends Application {
  
         stage.setScene(scene);
         stage.show();
+    }
+    
+    public static void charting(List<Double> info, List<Double> kpfs, double x) {
+    	for (int i = 0; i < info.size(); i += 3) {
+    		if (i + 2 == info.size()) {
+        		double y = info.get(i);
+        		addDataPoint(x, y);
+        		x += info.get(i+1);
+        		addDataPoint(x, y);
+    			break;
+    		}
+    		else {
+    			double y = info.get(i);
+    			addDataPoint(x, y);
+    			x += info.get(i+1);
+    			addDataPoint(x, y);
+    			x += ((info.get(i+3)-info.get(i))/info.get(i+2));
+    			y = info.get(i+3);
+    			//y = x + ((info.get(i+3)-info.get(i+0))/info.get(i+2));
+    		//	x = info.get(i+4);
+    			addDataPoint(x, y);
+    		}
+    	}
+    	
+    	//ZoomRevisionLog.window.setScene(scene);
+    	
+    }
+    
+    public static void addDataPoint(double x, double y) {
+    	series.getData().add(new XYChart.Data(x, y));
+    	double[] xy = getDisplayPosition(x, y);
+    	Label point = new Label();
+    	point.setId("dataPoint");
+    	point.setText(x + ", " + y);
+    	point.setLayoutX(xy[0]);
+    	point.setLayoutY(xy[1] + 15);
+    	System.out.println(point);
+    	border.getChildren().add(point);
+    }
+    
+    public static double[] getDisplayPosition(double x, double y) {
+    	double displayPositionX = (xShift + xAxis.getDisplayPosition(x));
+    	double displayPositionY = (yShift + yAxis.getDisplayPosition(y));
+    	double[] xy = {displayPositionX, displayPositionY};
+    	return xy;
     }
     
     /**
