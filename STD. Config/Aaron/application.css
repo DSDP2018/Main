@@ -116,8 +116,15 @@
 }
 
 #tooltip {
-    -fx-background-color: #41A0F4;
+	-fx-background-color: #41A0F4;
     -fx-background-insets: 0, 1, 2;
     -fx-padding: 5 10 5 10;
     -fx-font-size: 12px;
+}
+
+#dataPoint {
+	-fx-background-color: #F49541;
+	-fx-font-size: 8px;
+	-fx-background-insets: 0, 1, 2;
+	-fx-background-radius: 3, 2, 1;
 }
