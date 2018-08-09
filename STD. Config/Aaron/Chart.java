@@ -11,6 +11,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
@@ -31,16 +32,23 @@ public class Chart extends Application {
     static int proportionalHeight = screenHeight/10;
     static double proportionalWidth = screenWidth/16;
     
-    private Line valueMarker = new Line();
+    //private Line valueMarker = new Line();
+    //private static LineChart<Number, Number> chart;
     private static XYChart.Series<Number, Number> series = new XYChart.Series<>();
     private static NumberAxis xAxis;
-    private NumberAxis yAxis;
+    private static NumberAxis yAxis;
     private static double xShift;
+    private static double yShift;
+    private static Node chartArea;
+    
+    private static int numOfKPFs = 0;
+    
+    static Group root;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		Group root = new Group();
+		root = new Group();
 
 		int screenProportionHeightby25 = screenHeight/25;   
 
@@ -59,6 +67,11 @@ public class Chart extends Application {
         Label lblRevisionNum = label("R1", 75, 15, proportionalWidth*10, 37, "", "Revision Number");
         Label lblDateBorder = label("YY-MM-DD", 75, 15, proportionalWidth*12, 37, "", "Current Date");
         Label lblPageNum = label("Page 1 of 1", 75, 15, proportionalWidth*14, 37, "", "Page Number");
+        Label lblSignal = label("Signal", 75, 15, proportionalWidth*14+30, screenProportionHeightby25*4, "", "View/Hide Signals");
+        lblSignal.setRotate(270);
+        Label lblLabels = label("Labels", 75, 15, proportionalWidth*14+60, screenProportionHeightby25*4, "", "View/Hide Labels");
+        lblLabels.setRotate(270);
+        Label lblTemp = label("Temp.", 75, 15, proportionalWidth*14, screenProportionHeightby25*5, "", "Temperature");
         
         Button btnComponentState = button("Component State (KPF)",22,15, screenProportionHeightby25 + 1, screenProportionHeightby25+30+1, "SmallLabel" ,false, "Print the Current Page");
         Button btnSystemState = button("System State (KPF)",22,15, screenProportionHeightby25 + 1,screenHeight-80-15-10, "SmallLabel" ,false, "Print the Current Page");
@@ -69,8 +82,8 @@ public class Chart extends Application {
         
         root.getChildren().addAll(line1, line11, line2, line3, line,
         		smallVert1, smallVert2, smallVert3, lblSTDConfig, lblProjectID,
-        		lblRevisionNum, lblDateBorder, lblPageNum, btnComponentState,
-        		btnSystemState, btnPrint, btnDashboard, btnZoomIO, btnHelp);
+        		lblRevisionNum, lblDateBorder, lblPageNum, lblSignal, lblLabels, lblTemp,
+        		btnComponentState, btnSystemState, btnPrint, btnDashboard, btnZoomIO, btnHelp);
         
         
         LineChart<Number, Number> chart = new LineChart<>(xAxis = new NumberAxis(0, 1000, 50), yAxis = new NumberAxis(0, 100, 10));
@@ -87,32 +100,79 @@ public class Chart extends Application {
         chart.setMinWidth(screenWidth-250);
         chart.setMinHeight(screenHeight-230);
         
+        xAxis.setLabel("Time (seconds)");
         yAxis.setTickLabelsVisible(false);
         yAxis.setOpacity(0);
         //xAxis.setTickLabelsVisible(false);
         //xAxis.setOpacity(0);
         
-        series.getData().add(new XYChart.Data(0, 20));
-        series.getData().add(new XYChart.Data(20, 20));
-        series.getData().add(new XYChart.Data(50, 40));
-        series.getData().add(new XYChart.Data(100, 40));
-        series.getData().add(new XYChart.Data(250, 57.5));
-        series.getData().add(new XYChart.Data(400, 75));
-        series.getData().add(new XYChart.Data(500, 75));
+        
         chart.getData().add(series);
+        
+ 
+        CheckBox cbLabels1 = new CheckBox();
+        cbLabels1.setSelected(true);
+        cbLabels1.setLayoutX(lblLabels.getLayoutX() + 30);
+        cbLabels1.setLayoutY(lblLabels.getLayoutY() + screenProportionHeightby25);
+        cbLabels1.setOnAction(e -> {
+        	if (cbLabels1.isSelected()) {
+        		for (XYChart.Data<Number, Number> data : series.getData())
+        			data.getNode().setVisible(true);
+        		for (Node i : root.getChildren()) {
+        			if (i.getId() == "dataPoint")
+        				i.setVisible(true);
+        		}
+        	}
+        	else {
+        		for (XYChart.Data<Number, Number> data : series.getData())
+        			data.getNode().setVisible(false);
+        		for (Node i : root.getChildren()) {
+        			if (i.getId() == "dataPoint")
+        				i.setVisible(false);
+        		}
+        	}
+        });
+        
+        CheckBox cbSignal1 = new CheckBox();
+        cbSignal1.setLayoutX(lblSignal.getLayoutX() + 30);
+        cbSignal1.setLayoutY(lblSignal.getLayoutY() + screenProportionHeightby25);
+        cbSignal1.setSelected(true);
+        cbSignal1.setOnAction(e -> {
+        	if (cbSignal1.isSelected()) {
+        		series.getNode().setVisible(true);
+        		for (XYChart.Data<Number, Number> data : series.getData())
+        			data.getNode().setVisible(true);
+        		for (Node i : root.getChildren()) {
+        			if (i.getId() == "dataPoint")
+        				i.setVisible(true);
+        		}
+        		if (!cbLabels1.isSelected()) {
+        			cbLabels1.setSelected(true);
+        			cbLabels1.setDisable(false);
+        		}
+        	}
+        	else {
+        		series.getNode().setVisible(false);
+        		for (XYChart.Data<Number, Number> data : series.getData())
+        			data.getNode().setVisible(false);
+        		for (Node i : root.getChildren()) {
+        			if (i.getId() == "dataPoint")
+        				i.setVisible(false);
+        		}
+        		if (cbLabels1.isSelected()) 
+        			cbLabels1.setSelected(false);
+        		cbLabels1.setDisable(true);
+        	}
+        });
         
         
         StackPane stack = new StackPane();
         stack.getChildren().addAll(chart);
         stack.setLayoutX(screenProportionHeightby25*2);
         stack.setLayoutY(screenProportionHeightby25+90);
-//        Scene scene = new Scene(stack, 1000, 900);
         
-//        Pane stack = new Pane();
-
-//        stack.getChildren().addAll(chart);
-        
-        root.getChildren().addAll(stack, valueMarker);
+        //root.getChildren().addAll(stack, valueMarker, cbSignal1, cbLabels1);
+        root.getChildren().addAll(stack, cbSignal1, cbLabels1);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         
@@ -123,40 +183,89 @@ public class Chart extends Application {
     	stage.setHeight(primaryScreenBounds.getHeight());
         stage.show();
         
-        Node chartArea = chart.lookup(".chart-plot-background");
-        System.out.println("Node = " + chartArea);
-        Bounds chartAreaBounds = chartArea.localToScene(chartArea.getBoundsInLocal());
-        System.out.println("Chart area bounds = " + chartAreaBounds);
+        chartArea = chart.lookup(".chart-plot-background");
+//        Bounds chartAreaBounds = chartArea.localToScene(chartArea.getBoundsInLocal());
+//        
+//        xShift = chartAreaBounds.getMinX();
+//        yShift = chartAreaBounds.getMinY();
+//        valueMarker.setStartY(90);
+//        valueMarker.setEndY(screenHeight-105);
+//        valueMarker.setStroke(Color.BLUE);
+//        valueMarker.getStrokeDashArray().addAll(10.0, 10.0);
+//        
+//        double max = 210;
+//        
+//        double displayPosition = xAxis.getDisplayPosition(max);
+//        valueMarker.setStartX(xShift + displayPosition);
+//        valueMarker.setEndX(xShift + displayPosition);
+//        
+        addDataPoint(0, 20);
+        addDataPoint(40, 20);
+        addDataPoint(55, 40);
+        addDataPoint(100, 40);
+        addDataPoint(250, 57.5);
+        addDataPoint(400, 75);
+        addDataPoint(500, 75);
+
+        addKPF(420);
+        addKPF(688);
         
-        xShift = chartAreaBounds.getMinX();
-        valueMarker.setStartY(90);
-        valueMarker.setEndY(screenHeight-105);
-        valueMarker.setStroke(Color.BLUE);
-        valueMarker.getStrokeDashArray().addAll(10.0, 10.0);
+//        Label lblKPF1 = label("KPF1", 40, 15, valueMarker.getStartX()-20, valueMarker.getStartY()-10, "functionalButton", "The Current Menu");
+//        Label lblS1 = label("S1", 40, 15, valueMarker.getEndX()-20, valueMarker.getEndY()-10, "labelGrey", "The Current Menu");
         
-        double max = 210;
-//        for (Data<Number, Number> value : series.getData()) {
-//        	double x = value.getXValue().doubleValue();
-//        	if (x == 10) {
-//        		max = 70;
-//        	}
-//        }
-        System.out.println("Max = " + max);
-        
-        double displayPosition = xAxis.getDisplayPosition(max);
-        valueMarker.setStartX(xShift + displayPosition);
-        valueMarker.setEndX(xShift + displayPosition);
-        System.out.println("Display position = " + displayPosition);
-        
-        Label lblKPF1 = label("KPF1", 40, 15, valueMarker.getStartX()-20, valueMarker.getStartY()-10, "functionalButton", "The Current Menu");
-        Label lblS1 = label("S1", 40, 15, valueMarker.getEndX()-20, valueMarker.getEndY()-10, "labelGrey", "The Current Menu");
-        
-        root.getChildren().addAll(lblKPF1, lblS1);
+        //root.getChildren().addAll(lblKPF1, lblS1);
         
 	}
 	
     public static void main(String[] args) {
         launch();
+    }
+    
+    public static void addDataPoint(double x, double y) {
+    	series.getData().add(new XYChart.Data(x, y));
+    	double[] xy = getDisplayPosition(x, y);
+    	Label point = new Label();
+    	point.setId("dataPoint");
+    	point.setText(x + ", " + y);
+    	point.setLayoutX(xy[0]);
+    	point.setLayoutY(xy[1] + 15);
+    	System.out.println(point);
+    	root.getChildren().add(point);
+    }
+    
+    public static double[] getDisplayPosition(double x, double y) {
+    	double displayPositionX = (xShift + xAxis.getDisplayPosition(x));
+    	double displayPositionY = (yShift + yAxis.getDisplayPosition(y));
+    	double[] xy = {displayPositionX, displayPositionY};
+    	return xy;
+    }
+    
+    public static double getDisplayPositionX(double x) {
+    	return xAxis.getDisplayPosition(x);
+    }
+    
+    public static void addKPF(double x) {
+    	Line valueMarker = new Line();
+        Bounds chartAreaBounds = chartArea.localToScene(chartArea.getBoundsInLocal());
+        xShift = chartAreaBounds.getMinX();
+        
+        valueMarker.setStartY(90);
+        valueMarker.setEndY(screenHeight-105);
+        valueMarker.setStroke(Color.GREEN);
+        valueMarker.getStrokeDashArray().addAll(10.0, 10.0);
+        
+        
+        double displayPosition = getDisplayPositionX(x);
+        valueMarker.setStartX(xShift + displayPosition);
+        valueMarker.setEndX(xShift + displayPosition);
+        numOfKPFs += 1;
+        
+        String KPFName = "KPF" + numOfKPFs;
+        String SName = "S" + numOfKPFs;
+        Label lblKPF = label(KPFName, 40, 15, valueMarker.getStartX()-20, valueMarker.getStartY()-10, "functionalButton", "The Current Menu");
+        Label lblS = label(SName, 40, 15, valueMarker.getEndX()-20, valueMarker.getEndY()-10, "labelGrey", "The Current Menu");
+        
+        root.getChildren().addAll(valueMarker, lblKPF, lblS);
     }
 	
     public static Line LineBlackNoFill(double x1, int y1, double x2, int y2) {
@@ -220,8 +329,6 @@ public class Chart extends Application {
      
         return button1;
     }
-    
-
         
         /**
          * 
