@@ -1,0 +1,11 @@
+To Run:
+
+1. Download: MYSQL Workbench
+2. Create your own database through server.
+3. Update ConnectionToDatabase class (username (replace "root" on line 20), password (replace "root1" on line 20) and database name(on line 19, "connectionURL", in our case it's "mydb". Just replace that with your own database name))
+4. Put zoomRevisionLog, ConnectionToDatabase and CSS "application.css" class in a javaFX project and export to the desktop as a .jar file
+5. repeat for Chart, ConnectionToDatabse and CSS "application.css" file
+6. Create a new JavaFX project and copy toRun.java class and CSS "application.css" file
+7. Make sure to check where the code is looking for the .jar files (we created a folder on Desktop called "STDLogFinished" that consists of
+  our two .jar files (so the code goes to the desktop then goes into this folder and opens each .jar file on button click through the
+  toRun.java class)
