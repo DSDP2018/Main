@@ -184,21 +184,7 @@ public class Chart extends Application {
         stage.show();
         
         chartArea = chart.lookup(".chart-plot-background");
-//        Bounds chartAreaBounds = chartArea.localToScene(chartArea.getBoundsInLocal());
-//        
-//        xShift = chartAreaBounds.getMinX();
-//        yShift = chartAreaBounds.getMinY();
-//        valueMarker.setStartY(90);
-//        valueMarker.setEndY(screenHeight-105);
-//        valueMarker.setStroke(Color.BLUE);
-//        valueMarker.getStrokeDashArray().addAll(10.0, 10.0);
-//        
-//        double max = 210;
-//        
-//        double displayPosition = xAxis.getDisplayPosition(max);
-//        valueMarker.setStartX(xShift + displayPosition);
-//        valueMarker.setEndX(xShift + displayPosition);
-//        
+		
         addDataPoint(0, 20);
         addDataPoint(40, 20);
         addDataPoint(55, 40);
@@ -209,11 +195,6 @@ public class Chart extends Application {
 
         addKPF(420);
         addKPF(688);
-        
-//        Label lblKPF1 = label("KPF1", 40, 15, valueMarker.getStartX()-20, valueMarker.getStartY()-10, "functionalButton", "The Current Menu");
-//        Label lblS1 = label("S1", 40, 15, valueMarker.getEndX()-20, valueMarker.getEndY()-10, "labelGrey", "The Current Menu");
-        
-        //root.getChildren().addAll(lblKPF1, lblS1);
         
 	}
 	
