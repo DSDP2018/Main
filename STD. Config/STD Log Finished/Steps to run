@@ -1,5 +1,11 @@
 To Run:
+On Kepstrum Computer:
+ZoomRevisionLog is in a project Folder called STD
+graphing is in a project folder called GraphingDB
+toDo is in a project folder called Main
 
+
+On New Computer:
 1. Download: MYSQL Workbench
 2. Create your own database through server.
 3. Update ConnectionToDatabase class (username (replace "root" on line 20), password (replace "root1" on line 20) and database name(on line 19, "connectionURL", in our case it's "mydb". Just replace that with your own database name))
