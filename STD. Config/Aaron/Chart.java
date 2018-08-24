@@ -1,12 +1,19 @@
 package application;
+	
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -20,7 +27,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
 
 public class Chart extends Application {
 	
@@ -62,11 +68,11 @@ public class Chart extends Application {
         Line smallVert2 = LineBlackNoFill(proportionalWidth*9.5, screenProportionHeightby25, proportionalWidth*9.5, screenProportionHeightby25+30);
         Line smallVert3 = LineBlackNoFill(proportionalWidth*13.5, screenProportionHeightby25, proportionalWidth*13.5, screenProportionHeightby25+30);
         
-        Label lblSTDConfig = label("Intent Stress-Drivers Profile", 175, 15, 60, 37, "", "The Current Menu");
-        Label lblProjectID = label("123456789012345678901234567890", 250, 15, proportionalWidth*6, 37, "", "Project ID");
-        Label lblRevisionNum = label("R1", 75, 15, proportionalWidth*10, 37, "", "Revision Number");
-        Label lblDateBorder = label("YY-MM-DD", 75, 15, proportionalWidth*12, 37, "", "Current Date");
-        Label lblPageNum = label("Page 1 of 1", 75, 15, proportionalWidth*14, 37, "", "Page Number");
+        Label lblSTDConfig = label("Intent Stress-Drivers Profile", 175, 15, 60, 45, "", "The Current Menu");
+        Label lblProjectID = label("123456789012345678901234567890", 250, 15, proportionalWidth*6, 45, "", "Project ID");
+        Label lblRevisionNum = label("R1", 75, 15, proportionalWidth*10, 45, "", "Revision Number");
+        Label lblDateBorder = label("YY-MM-DD", 75, 15, proportionalWidth*12, 45, "", "Current Date");
+        Label lblPageNum = label("Page 1 of 1", 75, 15, proportionalWidth*14, 45, "", "Page Number");
         Label lblSignal = label("Signal", 75, 15, proportionalWidth*14+30, screenProportionHeightby25*4, "", "View/Hide Signals");
         lblSignal.setRotate(270);
         Label lblLabels = label("Labels", 75, 15, proportionalWidth*14+60, screenProportionHeightby25*4, "", "View/Hide Labels");
@@ -184,33 +190,86 @@ public class Chart extends Application {
         stage.show();
         
         chartArea = chart.lookup(".chart-plot-background");
-		
-        addDataPoint(0, 20);
-        addDataPoint(40, 20);
-        addDataPoint(55, 40);
-        addDataPoint(100, 40);
-        addDataPoint(250, 57.5);
-        addDataPoint(400, 75);
-        addDataPoint(500, 75);
+//        Bounds chartAreaBounds = chartArea.localToScene(chartArea.getBoundsInLocal());
+//        
+//        xShift = chartAreaBounds.getMinX();
+//        yShift = chartAreaBounds.getMinY();
+//        valueMarker.setStartY(90);
+//        valueMarker.setEndY(screenHeight-105);
+//        valueMarker.setStroke(Color.BLUE);
+//        valueMarker.getStrokeDashArray().addAll(10.0, 10.0);
+//        
+//        double max = 210;
+//        
+//        double displayPosition = xAxis.getDisplayPosition(max);
+//        valueMarker.setStartX(xShift + displayPosition);
+//        valueMarker.setEndX(xShift + displayPosition);
+//        
+      
+        try {
+        	
+        	Connection connection = ConnectionToDatabase.connectToDatabase();
+        	Statement stm = connection.createStatement();
+        	String sql = "SELECT * FROM mydb.DBTABLE2";
+        	ResultSet rst;
+        	rst = stm.executeQuery(sql);
 
-        addKPF(420);
-        addKPF(688);
+        	while(rst.next()){
+        		addDataPoint(rst.getDouble("X"), rst.getDouble("Y"));
+        	}	
+        	
+        } catch (ClassNotFoundException e1) {
+        	e1.printStackTrace();
+        }catch (SQLException e1) {
+        	e1.printStackTrace();
+        }
+        System.out.println("ADDED ALL VALUES");
+        
+
+        try {
+        	
+        	Connection connection = ConnectionToDatabase.connectToDatabase();
+        	Statement stm = connection.createStatement();
+        	String sql = "SELECT * FROM mydb.kpf";
+        	ResultSet rst;
+        	rst = stm.executeQuery(sql);
+
+        	while(rst.next()){
+        		addKPF(rst.getDouble("TIME"));
+        	}	
+        	
+        } catch (ClassNotFoundException e1) {
+        	e1.printStackTrace();
+        }catch (SQLException e1) {
+        	e1.printStackTrace();
+        }
+        System.out.println("ADDED KPF");
+
+        
+
+        
+//        Label lblKPF1 = label("KPF1", 40, 15, valueMarker.getStartX()-20, valueMarker.getStartY()-10, "functionalButton", "The Current Menu");
+//        Label lblS1 = label("S1", 40, 15, valueMarker.getEndX()-20, valueMarker.getEndY()-10, "labelGrey", "The Current Menu");
+        
+        //root.getChildren().addAll(lblKPF1, lblS1);
         
 	}
 	
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
     
     public static void addDataPoint(double x, double y) {
     	series.getData().add(new XYChart.Data(x, y));
     	double[] xy = getDisplayPosition(x, y);
+    	
     	Label point = new Label();
     	point.setId("dataPoint");
     	point.setText(x + ", " + y);
     	point.setLayoutX(xy[0]);
     	point.setLayoutY(xy[1] + 15);
     	System.out.println(point);
+    	
     	root.getChildren().add(point);
     }
     
@@ -218,6 +277,7 @@ public class Chart extends Application {
     	double displayPositionX = (xShift + xAxis.getDisplayPosition(x));
     	double displayPositionY = (yShift + yAxis.getDisplayPosition(y));
     	double[] xy = {displayPositionX, displayPositionY};
+    	System.out.println(xy[0] + ", " + xy[1]);
     	return xy;
     }
     
